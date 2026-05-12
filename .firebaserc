@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "YOUR_FIREBASE_PROJECT_ID": {
+      "hosting": {
+        "customer": ["dartbites-customer"],
+        "kitchen": ["dartbites-kitchen"],
+        "admin": ["dartbites-admin"]
+      }
+    }
+  }
+}
