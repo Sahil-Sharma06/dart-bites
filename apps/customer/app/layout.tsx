@@ -1,24 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Rubik } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "../lib/cart-store";
 
-const rubik = Rubik({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
   title: "Dart Bites",
-  description: "Fresh bites, fast pickup.",
+  description: "Authentic street flavors. Zero fluff. Just bold energy served daily.",
   manifest: "/manifest.json"
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F97316"
+  themeColor: "#FFE600"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={rubik.className}>
+    <html lang="en" className="dark">
+      <body className="bg-background text-primary chalkboard-bg min-h-screen">
         <CartProvider>{children}</CartProvider>
       </body>
     </html>
