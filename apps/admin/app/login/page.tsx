@@ -25,26 +25,26 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="grid min-h-screen place-items-center p-4">
-      <Card className="w-full max-w-sm space-y-4">
-        <h1 className="text-2xl font-black text-slate-800">Admin Login</h1>
+    <main className="grid min-h-screen place-items-center p-4 chalkboard-bg">
+      <Card className="w-full max-w-sm space-y-4 !border-white/10 !bg-surface/90 !text-white">
+        <h1 className="font-sora text-2xl font-extrabold uppercase tracking-tight">Admin Login</h1>
         <form className="space-y-3" onSubmit={onSubmit}>
           <input
-            className="w-full rounded-lg border px-3 py-2"
+            className="w-full border border-white/10 bg-background/60 px-3 py-2 text-sm text-white placeholder-on-surface-variant"
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            className="w-full rounded-lg border px-3 py-2"
+            className="w-full border border-white/10 bg-background/60 px-3 py-2 text-sm text-white placeholder-on-surface-variant"
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {error && <p className="text-sm text-red-500">{error}</p>}
-          <Button className="w-full" type="submit">
+          {error && <p className="text-sm text-red-300">{error}</p>}
+          <Button className="w-full !bg-secondary !text-on-secondary text-xs font-bold uppercase tracking-widest" type="submit">
             Sign In
           </Button>
         </form>

@@ -59,30 +59,59 @@ export function MenuForm({ initial, mode }: Props) {
   };
 
   return (
-    <Card>
+    <Card className="!border-white/10 !bg-surface/90 !text-white">
       <form className="space-y-3" onSubmit={onSubmit}>
-        <input className="w-full rounded-lg border px-3 py-2" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
-        <textarea className="w-full rounded-lg border px-3 py-2" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
-        <input className="w-full rounded-lg border px-3 py-2" placeholder="Price" type="number" value={price} onChange={(e) => setPrice(e.target.value)} required />
-        <select className="w-full rounded-lg border px-3 py-2" value={category} onChange={(e) => setCategory(e.target.value as Category)}>
+        <input
+          className="w-full border border-white/10 bg-background/60 px-3 py-2 text-sm text-white placeholder-on-surface-variant"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <textarea
+          className="w-full border border-white/10 bg-background/60 px-3 py-2 text-sm text-white placeholder-on-surface-variant"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+        <input
+          className="w-full border border-white/10 bg-background/60 px-3 py-2 text-sm text-white placeholder-on-surface-variant"
+          placeholder="Price"
+          type="number"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          required
+        />
+        <select
+          className="w-full border border-white/10 bg-background/60 px-3 py-2 text-sm text-white"
+          value={category}
+          onChange={(e) => setCategory(e.target.value as Category)}
+        >
           {categories.map((cat) => (
             <option key={cat} value={cat}>
               {cat}
             </option>
           ))}
         </select>
-        <input className="w-full rounded-lg border px-3 py-2" placeholder="Image URL" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required />
-        <label className="flex items-center gap-2 text-sm">
+        <input
+          className="w-full border border-white/10 bg-background/60 px-3 py-2 text-sm text-white placeholder-on-surface-variant"
+          placeholder="Image URL"
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+          required
+        />
+        <label className="flex items-center gap-2 text-xs uppercase tracking-widest text-on-surface-variant">
           <input type="checkbox" checked={isAvailable} onChange={(e) => setIsAvailable(e.target.checked)} />
           Available
         </label>
         <textarea
-          className="w-full rounded-lg border px-3 py-2"
+          className="w-full border border-white/10 bg-background/60 px-3 py-2 text-sm text-white placeholder-on-surface-variant"
           placeholder="Addons as name:price, one per line"
           value={addonsText}
           onChange={(e) => setAddonsText(e.target.value)}
         />
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full !bg-secondary !text-on-secondary text-xs font-bold uppercase tracking-widest">
           {mode === "create" ? "Create Item" : "Save Changes"}
         </Button>
       </form>

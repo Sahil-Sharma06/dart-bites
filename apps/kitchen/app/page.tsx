@@ -55,40 +55,94 @@ export default function KitchenPage() {
 
   const activeOrders = orders.filter((order) => order.status === "pending" || order.status === "preparing");
   const readyOrders = orders.filter((order) => order.status === "ready");
+  const totalOrders = orders.length;
 
   return (
-    <main className="min-h-screen p-4 md:p-6">
-      <header className="mb-5 flex items-center justify-between">
-        <h1 className="text-2xl font-black text-white">Dart Bites Kitchen Display</h1>
-        <p className="text-sm text-slate-400">Live orders</p>
-      </header>
-
-      <section className="grid gap-4 lg:grid-cols-2">
-        {error && (
-          <div className="rounded-xl border border-red-500/50 bg-red-500/10 p-3 text-sm text-red-200 lg:col-span-2">
-            {error}
+    <main className="min-h-screen chalkboard-bg">
+      <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-background/90 px-5 py-4 backdrop-blur-md md:px-16">
+        <div className="flex items-center justify-between gap-4">
+          <div className="font-sora text-xl font-extrabold uppercase italic tracking-tighter text-secondary">
+            Dart Bites
           </div>
-        )}
-        <div className="rounded-2xl border border-yellow-500/40 bg-slate-950/50 p-4">
-          <h2 className="mb-3 text-lg font-bold text-yellow-300">New Orders</h2>
-          <div className="space-y-3">
-            {activeOrders.map((order) => (
-              <OrderCard key={order.id} order={order} />
-            ))}
-            {!activeOrders.length && <p className="text-sm text-slate-400">No active orders</p>}
+          <div className="flex items-center gap-3 text-xs uppercase tracking-widest text-on-surface-variant">
+            <span className="hidden items-center gap-2 sm:flex">
+              <span className="h-2 w-2 rounded-full bg-secondary animate-pulse" />
+              Live orders
+            </span>
+            <span className="border border-white/10 px-3 py-1 text-white">Total {totalOrders}</span>
           </div>
         </div>
+      </nav>
 
-        <div className="rounded-2xl border border-emerald-500/40 bg-slate-950/50 p-4">
-          <h2 className="mb-3 text-lg font-bold text-emerald-300">Ready</h2>
-          <div className="space-y-3">
-            {readyOrders.map((order) => (
-              <OrderCard key={order.id} order={order} />
-            ))}
-            {!readyOrders.length && <p className="text-sm text-slate-400">No ready orders</p>}
+      <div className="pt-[57px]">
+        <header className="mx-auto max-w-6xl px-5 pb-6 pt-10 md:px-16 float-in">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h1 className="font-sora text-3xl font-extrabold uppercase tracking-tighter text-white md:text-5xl chalk-text">
+                Kitchen Display
+              </h1>
+              <div className="mb-4 mt-3 h-[3px] w-20 bg-secondary" />
+              <p className="max-w-lg text-sm text-on-surface-variant md:text-base">
+                Real-time tickets for the line. Keep them moving.
+              </p>
+            </div>
+            <div className="grid grid-cols-3 gap-3 text-xs uppercase tracking-widest">
+              <div className="border border-white/10 bg-surface px-4 py-3 text-center">
+                <p className="text-on-surface-variant">Active</p>
+                <p className="font-sora text-lg font-bold text-white">{activeOrders.length}</p>
+              </div>
+              <div className="border border-white/10 bg-surface px-4 py-3 text-center">
+                <p className="text-on-surface-variant">Ready</p>
+                <p className="font-sora text-lg font-bold text-white">{readyOrders.length}</p>
+              </div>
+              <div className="border border-white/10 bg-surface px-4 py-3 text-center">
+                <p className="text-on-surface-variant">Total</p>
+                <p className="font-sora text-lg font-bold text-white">{totalOrders}</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </header>
+
+        <section className="mx-auto max-w-6xl px-5 pb-16 md:px-16">
+          {error && (
+            <div className="mb-6 border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-300 float-in delay-1">
+              {error}
+            </div>
+          )}
+
+          <div className="grid gap-6 lg:grid-cols-2 float-in delay-1">
+            <div className="border border-white/10 bg-surface/80 p-4 md:p-5">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="font-sora text-xl font-bold uppercase tracking-tight text-secondary">New Orders</h2>
+                <span className="text-xs uppercase tracking-widest text-on-surface-variant">
+                  {activeOrders.length} active
+                </span>
+              </div>
+              <div className="space-y-3">
+                {activeOrders.map((order) => (
+                  <OrderCard key={order.id} order={order} />
+                ))}
+                {!activeOrders.length && <p className="text-sm text-on-surface-variant">No active orders</p>}
+              </div>
+            </div>
+
+            <div className="border border-white/10 bg-surface/80 p-4 md:p-5">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="font-sora text-xl font-bold uppercase tracking-tight text-emerald-300">Ready</h2>
+                <span className="text-xs uppercase tracking-widest text-on-surface-variant">
+                  {readyOrders.length} ready
+                </span>
+              </div>
+              <div className="space-y-3">
+                {readyOrders.map((order) => (
+                  <OrderCard key={order.id} order={order} />
+                ))}
+                {!readyOrders.length && <p className="text-sm text-on-surface-variant">No ready orders</p>}
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
   );
 }

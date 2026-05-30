@@ -34,31 +34,34 @@ export default function MenuPage() {
   return (
     <AuthGuard>
       <AdminShell>
-        <Card className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl font-black">Menu Items</h1>
+        <Card className="space-y-4 !border-white/10 !bg-surface/90 !text-white">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <h1 className="font-sora text-2xl font-extrabold uppercase tracking-tight">Menu Items</h1>
             <Link href="/menu/new">
-              <Button>Add New Item</Button>
+              <Button className="!bg-secondary !text-on-secondary text-xs font-bold uppercase tracking-widest">Add New Item</Button>
             </Link>
           </div>
 
           <div className="space-y-2">
             {items.map((item) => (
-              <div key={item.id} className="flex items-center justify-between rounded-xl border p-3">
+              <div key={item.id} className="flex flex-col gap-4 border border-white/10 bg-background/60 p-3 md:flex-row md:items-center md:justify-between">
                 <div>
                   <p className="font-bold">{item.name}</p>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-on-surface-variant">
                     {item.category} • Rs {item.price}
                   </p>
                 </div>
-                <div className="flex gap-2">
-                  <Button variant="secondary" onClick={() => toggleAvailability(item)}>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    className="!bg-white/10 !text-white hover:!bg-white/20"
+                    onClick={() => toggleAvailability(item)}
+                  >
                     {item.isAvailable ? "Set Unavailable" : "Set Available"}
                   </Button>
                   <Link href={`/menu/${item.id}`}>
-                    <Button variant="ghost">Edit</Button>
+                    <Button className="!bg-secondary !text-on-secondary">Edit</Button>
                   </Link>
-                  <Button variant="ghost" className="text-red-600" onClick={() => deleteItem(item.id)}>
+                  <Button className="!bg-transparent !text-red-300 hover:!text-red-200" onClick={() => deleteItem(item.id)}>
                     Delete
                   </Button>
                 </div>

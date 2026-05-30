@@ -32,6 +32,12 @@ export function OrderCard({ order }: Props) {
     legacyOrder.orderID?.trim() ||
     legacyOrder.order_id?.trim() ||
     (order.id ? `#${order.id.slice(0, 6).toUpperCase()}` : "ID pending");
+  const statusTone: Record<OrderStatus, string> = {
+    pending: "!bg-secondary !text-on-secondary",
+    preparing: "!bg-white/10 !text-white",
+    ready: "!bg-emerald-300 !text-black",
+    completed: "!bg-white/10 !text-white"
+  };
 
   const updateStatus = async () => {
     if (!order.id) return;
@@ -43,47 +49,47 @@ export function OrderCard({ order }: Props) {
   };
 
   return (
-    <Card className="space-y-3 !border-slate-700 !bg-slate-900 !text-slate-100 shadow-lg">
+    <Card className="group space-y-3 !border-white/5 !bg-surface/90 !text-white shadow-none transition-all duration-300 hover:!border-secondary/40 hover:-translate-y-0.5">
       <div className="flex items-center justify-between">
         <div>
-          <p className="inline-block rounded-md bg-slate-800 px-2 py-1 text-2xl font-black tracking-wide text-white">
+          <p className="inline-block rounded-md border border-white/10 bg-background/70 px-2 py-1 text-2xl font-black tracking-wide text-white">
             {displayOrderId}
           </p>
-          <p className="text-sm text-slate-400">{minsAgo} min ago</p>
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-300">{orderTypeLabel}</p>
+          <p className="text-sm text-on-surface-variant">{minsAgo} min ago</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-on-surface-variant">{orderTypeLabel}</p>
         </div>
-        <Badge status={order.status}>{order.status}</Badge>
+        <Badge className={`border border-white/10 ${statusTone[order.status]}`}>{order.status}</Badge>
       </div>
-      <div className="space-y-2 rounded-xl border border-slate-700 bg-slate-800/60 p-3">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-300">Order Details</p>
-        {!orderItems.length && <p className="text-sm text-slate-300">No item details available.</p>}
-        <ul className="space-y-2 text-sm text-slate-100">
+      <div className="space-y-2 rounded-xl border border-white/10 bg-background/60 p-3">
+        <p className="text-xs font-semibold uppercase tracking-wide text-on-surface-variant">Order Details</p>
+        {!orderItems.length && <p className="text-sm text-on-surface-variant">No item details available.</p>}
+        <ul className="space-y-2 text-sm text-white">
           {orderItems.map((item, idx) => {
             const addons = Array.isArray(item.selectedAddons) ? item.selectedAddons : [];
             const lineTotal = (Number(item.price) || 0) * (Number(item.quantity) || 0);
 
             return (
-              <li key={`${item.menuItemId}-${idx}`} className="rounded-lg bg-slate-900/70 p-2">
+              <li key={`${item.menuItemId}-${idx}`} className="rounded-lg border border-white/5 bg-surface/60 p-2">
                 <div className="flex items-center justify-between gap-3">
                   <p className="font-semibold">
                     {item.quantity} x {item.name}
                   </p>
-                  <p className="text-xs font-semibold text-slate-300">Rs {lineTotal.toFixed(2)}</p>
+                  <p className="text-xs font-semibold text-on-surface-variant">Rs {lineTotal.toFixed(2)}</p>
                 </div>
                 {addons.length > 0 && (
-                  <p className="mt-1 text-xs text-slate-300">Addons: {addons.join(", ")}</p>
+                  <p className="mt-1 text-xs text-on-surface-variant">Addons: {addons.join(", ")}</p>
                 )}
               </li>
             );
           })}
         </ul>
       </div>
-      <div className="flex items-center justify-between text-xs text-slate-300">
+      <div className="flex items-center justify-between text-xs text-on-surface-variant">
         <span>Payment: {paymentLabel}</span>
-        <span className="font-semibold text-slate-100">Total: Rs {(Number(order.totalAmount) || 0).toFixed(2)}</span>
+        <span className="font-semibold text-white">Total: Rs {(Number(order.totalAmount) || 0).toFixed(2)}</span>
       </div>
       <Button
-        className="w-full !bg-emerald-500 !text-slate-900 hover:!bg-emerald-400"
+        className="w-full !bg-secondary !text-on-secondary hover:brightness-110"
         disabled={!order.id}
         onClick={updateStatus}
       >

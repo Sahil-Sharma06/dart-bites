@@ -32,7 +32,7 @@ export default function EditMenuPage({ params }: { params: { id: string } }) {
   return (
     <AuthGuard>
       <AdminShell>
-        <h1 className="mb-4 text-xl font-black">Edit Menu Item</h1>
+        <h1 className="font-sora mb-4 text-2xl font-extrabold uppercase tracking-tight text-white">Edit Menu Item</h1>
         <MenuForm mode="edit" initial={item} />
       </AdminShell>
     </AuthGuard>

@@ -54,37 +54,48 @@ export default function AnalyticsPage() {
   return (
     <AuthGuard>
       <AdminShell>
-        <div className="grid gap-4 md:grid-cols-3">
-          <Card>
-            <p className="text-sm text-slate-500">Today&apos;s Order Count</p>
-            <p className="text-3xl font-black">{orderCount}</p>
+        <div className="grid items-stretch gap-4 md:grid-cols-3">
+          <Card className="flex min-h-[120px] flex-col justify-between !border-white/10 !bg-surface/90 !text-white">
+            <p className="text-xs uppercase tracking-widest text-on-surface-variant">Today&apos;s Order Count</p>
+            <p className="font-sora text-3xl font-extrabold">{orderCount}</p>
           </Card>
-          <Card>
-            <p className="text-sm text-slate-500">Today&apos;s Revenue</p>
-            <p className="text-3xl font-black">Rs {revenue.toFixed(2)}</p>
+          <Card className="flex min-h-[120px] flex-col justify-between !border-white/10 !bg-surface/90 !text-white">
+            <p className="text-xs uppercase tracking-widest text-on-surface-variant">Today&apos;s Revenue</p>
+            <p className="font-sora text-3xl font-extrabold">Rs {revenue.toFixed(2)}</p>
           </Card>
-          <Card>
-            <p className="text-sm text-slate-500">Top 5 Items</p>
-            <ul className="mt-2 space-y-1 text-sm">
+          <Card className="flex min-h-[120px] flex-col !border-white/10 !bg-surface/90 !text-white">
+            <p className="text-xs uppercase tracking-widest text-on-surface-variant">Top 5 Items</p>
+            <ul className="mt-3 space-y-1 text-sm text-on-surface-variant">
               {topItems.map((item) => (
-                <li key={item.name}>
-                  {item.name}: {item.qty}
+                <li key={item.name} className="flex items-center justify-between">
+                  <span>{item.name}</span>
+                  <span className="text-white">{item.qty}</span>
                 </li>
               ))}
+              {topItems.length === 0 && <li className="text-on-surface-variant">No orders yet</li>}
             </ul>
           </Card>
         </div>
 
-        <Card className="mt-4 h-[360px]">
-          <p className="mb-3 text-sm font-semibold text-slate-600">Hourly Order Volume</p>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={hourly}>
-              <XAxis dataKey="hour" hide />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
-              <Bar dataKey="orders" fill="#334155" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+        <Card className="mt-6 flex h-[380px] flex-col !border-white/10 !bg-surface/90 !text-white">
+          <div className="mb-3 flex items-center justify-between">
+            <p className="text-xs font-semibold uppercase tracking-widest text-on-surface-variant">Hourly Order Volume</p>
+            <span className="text-xs uppercase tracking-widest text-on-surface-variant">Today</span>
+          </div>
+          <div className="flex-1">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={hourly}>
+                <XAxis dataKey="hour" hide />
+                <YAxis allowDecimals={false} />
+                <Tooltip
+                  contentStyle={{ background: "#0B1326", border: "1px solid rgba(255,255,255,0.1)", color: "#FFFFFF" }}
+                  itemStyle={{ color: "#FFFFFF" }}
+                  labelStyle={{ color: "#94A3B8" }}
+                />
+                <Bar dataKey="orders" fill="#FFE600" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </Card>
       </AdminShell>
     </AuthGuard>

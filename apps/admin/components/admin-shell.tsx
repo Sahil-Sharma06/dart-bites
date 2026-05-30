@@ -24,34 +24,45 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <p className="text-lg font-black text-slate-800">Dart Bites Admin</p>
+    <div className="min-h-screen chalkboard-bg">
+      <header className="fixed top-0 z-50 w-full border-b border-white/5 bg-background/90 px-5 py-4 backdrop-blur-md md:px-16">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
+          <p className="font-sora text-xl font-extrabold uppercase italic tracking-tighter text-secondary">
+            Dart Bites Admin
+          </p>
           <div className="flex items-center gap-3">
-            <span className="text-sm text-slate-500">{user?.email}</span>
-            <Button variant="secondary" onClick={logout}>
+            <span className="hidden text-xs uppercase tracking-widest text-on-surface-variant sm:inline">
+              {user?.email ?? "Signed out"}
+            </span>
+            <Button className="!bg-secondary !text-on-secondary text-xs font-bold uppercase tracking-widest" onClick={logout}>
               Logout
             </Button>
           </div>
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-4 py-4 md:grid-cols-[220px_1fr]">
-        <nav className="rounded-2xl border bg-white p-2">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`block rounded-lg px-3 py-2 text-sm font-semibold ${
-                pathname.startsWith(link.href) ? "bg-slate-900 text-white" : "text-slate-700 hover:bg-slate-100"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-        <main>{children}</main>
+      <div className="pt-[57px]">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-5 py-8 md:grid-cols-[220px_1fr] md:px-16">
+          <nav className="border border-white/10 bg-surface/80 p-2">
+            {links.map((link) => {
+              const active = pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`block px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all ${
+                    active
+                      ? "bg-secondary text-on-secondary"
+                      : "text-on-surface-variant hover:text-white hover:border-white/30"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
+          <main className="space-y-6">{children}</main>
+        </div>
       </div>
     </div>
   );

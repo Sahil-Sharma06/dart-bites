@@ -13,6 +13,12 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [statusFilter, setStatusFilter] = useState<(typeof statuses)[number]>("all");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const statusTone: Record<OrderStatus, string> = {
+    pending: "!bg-secondary !text-on-secondary",
+    preparing: "!bg-white/10 !text-white",
+    ready: "!bg-emerald-300 !text-black",
+    completed: "!bg-white/10 !text-white"
+  };
 
   useEffect(() => {
     const db = getClientFirestore();
@@ -40,11 +46,11 @@ export default function OrdersPage() {
   return (
     <AuthGuard>
       <AdminShell>
-        <Card className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl font-black">Today&apos;s Orders</h1>
+        <Card className="space-y-4 !border-white/10 !bg-surface/90 !text-white">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <h1 className="font-sora text-2xl font-extrabold uppercase tracking-tight">Today&apos;s Orders</h1>
             <select
-              className="rounded-lg border px-2 py-1 text-sm"
+              className="border border-white/10 bg-background/60 px-3 py-2 text-xs uppercase tracking-widest text-white"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as (typeof statuses)[number])}
             >
@@ -58,7 +64,7 @@ export default function OrdersPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full min-w-[820px] text-left text-sm">
-              <thead className="text-slate-500">
+              <thead className="text-xs uppercase tracking-widest text-on-surface-variant">
                 <tr>
                   <th className="py-2">Order ID</th>
                   <th>Items</th>
@@ -73,22 +79,24 @@ export default function OrdersPage() {
                   <>
                     <tr
                       key={order.id}
-                      className="cursor-pointer border-t"
+                      className="cursor-pointer border-t border-white/10"
                       onClick={() => setExpanded(expanded === order.id ? null : (order.id as string))}
                     >
                       <td className="py-3 font-bold">{order.orderId}</td>
-                      <td>{order.items.slice(0, 2).map((i) => i.name).join(", ")}</td>
+                      <td className="text-on-surface-variant">{order.items.slice(0, 2).map((i) => i.name).join(", ")}</td>
                       <td>Rs {order.totalAmount.toFixed(2)}</td>
                       <td>
-                        <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
+                        <span className="border border-white/10 px-2 py-1 text-xs font-semibold text-on-surface-variant">
                           {order.orderType === "dine-in" ? "Dine-in" : order.orderType === "takeaway" ? "Takeaway" : "Not set"}
                         </span>
                       </td>
                       <td>
                         <div className="flex items-center gap-2">
-                          <Badge status={order.status}>{order.status}</Badge>
+                          <Badge status={order.status} className={`border border-white/10 ${statusTone[order.status]}`}>
+                            {order.status}
+                          </Badge>
                           <select
-                            className="rounded border px-1 py-0.5"
+                            className="border border-white/10 bg-background/60 px-2 py-1 text-xs uppercase tracking-widest text-white"
                             value={order.status}
                             onClick={(e) => e.stopPropagation()}
                             onChange={(e) => setStatus(order.id as string, e.target.value as OrderStatus)}
@@ -103,8 +111,8 @@ export default function OrdersPage() {
                       <td>{order.createdAt?.toDate?.().toLocaleTimeString() ?? "-"}</td>
                     </tr>
                     {expanded === order.id && (
-                      <tr className="border-t bg-slate-50">
-                        <td colSpan={6} className="px-3 py-3">
+                      <tr className="border-t border-white/10 bg-background/60">
+                        <td colSpan={6} className="px-3 py-3 text-on-surface-variant">
                           <ul className="space-y-1">
                             {order.items.map((item, idx) => (
                               <li key={`${item.menuItemId}-${idx}`}>

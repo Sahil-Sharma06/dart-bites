@@ -8,7 +8,7 @@ export default function NewMenuItemPage() {
   return (
     <AuthGuard>
       <AdminShell>
-        <h1 className="mb-4 text-xl font-black">Add Menu Item</h1>
+        <h1 className="font-sora mb-4 text-2xl font-extrabold uppercase tracking-tight text-white">Add Menu Item</h1>
         <MenuForm mode="create" />
       </AdminShell>
     </AuthGuard>
