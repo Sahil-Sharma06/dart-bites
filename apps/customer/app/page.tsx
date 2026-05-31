@@ -10,6 +10,13 @@ import { useCart } from "../lib/cart-store";
 const CATEGORIES = ["All", "Snacks", "Mains", "Drinks", "Extras"] as const;
 type ActiveCat = (typeof CATEGORIES)[number];
 
+const NON_VEG_KEYWORDS = ["chicken", "egg", "mutton", "fish", "prawn", "beef", "pork"] as const;
+
+const isNonVegItem = (item: MenuItem) => {
+  const haystack = `${item.name} ${item.description ?? ""}`.toLowerCase();
+  return NON_VEG_KEYWORDS.some((keyword) => haystack.includes(keyword));
+};
+
 export default function MenuPage() {
   const { addItem, count } = useCart();
   const [active, setActive] = useState<ActiveCat>("All");
@@ -42,7 +49,10 @@ export default function MenuPage() {
     return () => unsub();
   }, []);
 
-  const available = useMemo(() => menu.filter((i) => i.isAvailable !== false), [menu]);
+  const available = useMemo(
+    () => menu.filter((i) => i.isAvailable !== false && !isNonVegItem(i)),
+    [menu]
+  );
 
   const searchResults = useMemo(() => {
     const q = search.trim().toLowerCase();

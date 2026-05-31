@@ -25,9 +25,29 @@ function normalizeImageUrl(rawUrl: string): string | null {
 
 const LOCAL_IMAGE_MAP: Record<string, string> = {
   "Veg Burger": "/Veg Burger.png",
+  "Cheese Veg Burger": "/2CheeseBurgers.png",
+  "2 Veg Burgers": "/2VegBurgers.png",
+  "2 Cheese Burgers": "/2CheeseBurgers.png",
+  "Veg Burger + Rasna": "/VegBurger+Rasna.png",
+  "Veg Burger + Lemon Soda": "/Burger+LemonSoda.png",
+  "Cheese Burger + Rasna": "/CheeseBurger+Rasna.png",
+  "Cheese Burger + Lemon Soda": "/VegCheeseBurger+LemonSoda.png",
+  "Potato Cheese Shots": "/cheese Sots.png",
+  "Peri Peri Cheese Shots": "/cheese Sots.png",
+  "Loaded Cheese Shots": "/cheese Sots.png",
+  "Potato Cheese Shots + Rasna": "/PotatoCheeseShots+Rasna.png",
+  "Potato Cheese Shots + Lemon Soda": "/CheeseShots+LemonSoda.png",
+  "Potato Cheese Shots + Aam Panna": "/PotatoCheeseShots+AamPanna.png",
+  "Potato Cheese Shots + Sweet Lassi": "/PotatoCheeseShots+SweetLassi.png",
+  "Potato Cheese Shots + Green Apple Mojito": "/PotatoCheeseShots+GreenAppleMojito.png",
+  "Potato Cheese Shots + Blue Lagoon Mojito": "/PotatoCheeseShots+BlueLagoon.png",
   "Regular Fries": "/Normal Fries.png",
   "Fries": "/Normal Fries.png",
   "Peri Peri Fries": "/PiriPiri Fries.png",
+  "Fries + Rasna": "/Fries+Rasna.png",
+  "Fries + Lemon Soda": "/Fries+LemonSoda.png",
+  "Peri Peri Fries + Rasna": "/PeriPeri+Rasna.png",
+  "Peri Peri Fries + Lemon Soda": "/PeriPeri+LemonSoda.png",
   "Blue Lagoon Mojito": "/Blue Lagoon.png",
   "Green Apple Mojito": "/Green Apple Mojito.png",
   "Strawberry Slush": "/Strawberry Slush.png",
@@ -36,6 +56,15 @@ const LOCAL_IMAGE_MAP: Record<string, string> = {
   "Rasna": "/Rasna.png",
   "Aam Panna": "/Aam Panna.png",
   "Sweet Lassi": "/Lassi.png",
+  "Chilled Water Bottle": "/water bottle.png",
+  "Fried Veg Momos (Half)": "/FriedMomos.png",
+  "Fried Veg Momos (Full)": "/FriedMomos.png",
+  "Kurkure Veg Momos (Half)": "/KukureFriedMomos.png",
+  "Kurkure Veg Momos (Full)": "/KukureFriedMomos.png",
+  "Fried Paneer Momos (Half)": "/FriedMomos.png",
+  "Fried Paneer Momos (Full)": "/FriedMomos.png",
+  "Kurkure Paneer Momos (Half)": "/KukureFriedMomos.png",
+  "Kurkure Paneer Momos (Full)": "/KukureFriedMomos.png",
   "Vanilla Brownie Bowl": "/Vanilla Brownie bowl .png",
   "Mango Brownie Bowl": "/Mango Brownie Bowl.png",
   "Strawberry Cream Brownie Bowl": "/Strawberry Brownie Bowl.png",
@@ -46,14 +75,27 @@ const LOCAL_IMAGE_MAP: Record<string, string> = {
 };
 
 function resolveLocalImage(name: string): string | null {
-  return LOCAL_IMAGE_MAP[name] ?? null;
+  const direct = LOCAL_IMAGE_MAP[name];
+  if (direct) return direct;
+
+  const lowered = name.toLowerCase();
+  if (lowered.includes("momos")) {
+    if (lowered.includes("kurkure")) return "/KukureFriedMomos.png";
+    if (lowered.includes("fried")) return "/FriedMomos.png";
+    return "/FriedMomos.png";
+  }
+  if (lowered.includes("water bottle")) return "/water bottle.png";
+
+  return null;
 }
 
 export function MenuCard({ item, onAdd }: Props) {
   const [showAddons, setShowAddons] = useState(false);
   const [selected, setSelected] = useState<Addon[]>([]);
   const [imageError, setImageError] = useState(false);
-  const imageUrl = normalizeImageUrl(item.imageUrl) ?? resolveLocalImage(item.name);
+  const localImageUrl = resolveLocalImage(item.name);
+  const primaryImageUrl = normalizeImageUrl(item.imageUrl) ?? localImageUrl;
+  const imageUrl = imageError ? localImageUrl : primaryImageUrl;
 
   const toggleAddon = (addon: Addon) => {
     setSelected((prev) => {
@@ -72,7 +114,7 @@ export function MenuCard({ item, onAdd }: Props) {
     <div className={`group relative flex flex-col bg-surface border border-white/5 hover:border-secondary/40 transition-all duration-300 ${!item.isAvailable ? "opacity-50" : ""}`}>
       {/* Image */}
       <div className="aspect-square w-full overflow-hidden bg-surface">
-        {imageUrl && !imageError ? (
+        {imageUrl ? (
           <img
             src={imageUrl}
             alt={item.name}
